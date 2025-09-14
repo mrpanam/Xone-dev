@@ -1,23 +1,22 @@
 import { Component } from '@angular/core';
-import { TradeService } from '../services/trade.service';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, AsyncPipe } from '@angular/common';
+import { CategoryService } from '../services/category.service';
 
 @Component({
   selector: 'app-category',
-  imports: [JsonPipe],
+  standalone: true,
+  imports: [JsonPipe, AsyncPipe],
   templateUrl: './category.html',
   styleUrl: './category.css'
 })
 export class CategoryComponent {
-
-  constructor(public tradeService: TradeService) {}
+  constructor(public categoryService: CategoryService) {}
 
   async ngOnInit() {
-    await this.tradeService.loadCategories();
+    await this.categoryService.loadCategories();
   }
 
   async refreshCategories() {
-    await this.tradeService.refreshCategories();
+    await this.categoryService.refreshCategories();
   }
-
 }

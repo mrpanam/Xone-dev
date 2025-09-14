@@ -9,21 +9,21 @@
                     type="button"
                     class="btn btn-primary"
                     (click)="refreshCategories()"
-                    [disabled]="tradeService.loading"
+                    [disabled]="(categoryService.loading$ | async)"
                 >
-                    @if (tradeService.loading) {
+                    @if (categoryService.loading$ | async) {
                         <span
                             class="spinner-border spinner-border-sm me-2"
                             role="status"
                             aria-hidden="true"
                         ></span>
                     }
-                    {{ tradeService.loading ? 'Loading...' : 'Refresh Categories' }}
+                    {{ (categoryService.loading$ | async) ? 'Loading...' : 'Refresh Categories' }}
                 </button>
             </div>
 
             <!-- Loading state -->
-            @if (tradeService.loading) {
+            @if (categoryService.loading$ | async) {
                 <div class="d-flex justify-content-center align-items-center" style="min-height: 200px">
                     <div class="text-center">
                         <div class="spinner-border text-primary mb-3" role="status">
@@ -35,18 +35,18 @@
             }
 
             <!-- Error state -->
-            @if (tradeService.error) {
+            @if (categoryService.error$ | async; as error) {
                 <div class="alert alert-danger" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    {{ tradeService.error }}
+                    {{ error }}
                 </div>
             }
 
             <!-- Categories display -->
             <div>
-                @if (!tradeService.loading && !tradeService.error) {
+                @if (!(categoryService.loading$ | async) && !(categoryService.error$ | async)) {
                     <!-- No categories message -->
-                    @if (tradeService.categories.length === 0) {
+                    @if ((categoryService.categories$ | async)?.length === 0) {
                         <div class="text-center py-5">
                             <i class="bi bi-folder-x display-1 text-muted mb-3"></i>
                             <p class="text-muted fs-5">No categories found.</p>
@@ -54,7 +54,7 @@
                     } @else {
                         <!-- Categories grid -->
                         <div class="row g-4 mb-5">
-                            @for (category of tradeService.categories; track category.id) {
+                            @for (category of categoryService.categories$ | async; track category.id) {
                                 <div class="col-12 col-md-6 col-lg-4">
                                     <div class="card h-100 shadow-sm">
                                         <div class="card-body">
@@ -92,7 +92,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <pre class="bg-light p-3 rounded"><code>{{ tradeService.categories | json }}</code></pre>
+                        <pre class="bg-light p-3 rounded"><code>{{ categoryService.categories$ | async | json }}</code></pre>
                     </div>
                 </div>
             </div>

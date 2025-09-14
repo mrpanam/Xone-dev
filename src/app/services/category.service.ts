@@ -1,0 +1,63 @@
+import { Injectable } from '@angular/core';
+import { invoke } from '@tauri-apps/api/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Category } from '../models/trade.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CategoryService {
+  private _categories = new BehaviorSubject<Category[]>([]);
+  private _loading = new BehaviorSubject<boolean>(false);
+  private _error = new BehaviorSubject<string | null>(null);
+
+  // Public observables
+  categories$ = this._categories.asObservable();
+  loading$ = this._loading.asObservable();
+  error$ = this._error.asObservable();
+
+  // Get current value of categories
+  get categories(): Category[] {
+    return [...this._categories.value];
+  }
+
+  // Load all categories
+  async loadCategories(forceRefresh = false): Promise<void> {
+    if (this._loading.value) return;
+    
+    this._loading.next(true);
+    this._error.next(null);
+
+    try {
+      const categories = await invoke<Category[]>('get_types');
+      console.log('Categories loaded:', categories);
+      this._categories.next(categories);
+    } catch (error) {
+      const errorMessage = `Failed to load categories: ${error}`;
+      this._error.next(errorMessage);
+      console.error('Error loading categories:', error);
+      throw new Error(errorMessage);
+    } finally {
+      this._loading.next(false);
+    }
+  }
+
+  // Get category by ID
+  getCategoryById(id: string): Category | undefined {
+    return this._categories.value.find(cat => cat.id?.id.String === id);
+  }
+
+  // Get category name by ID
+  getCategoryName(categoryId: { id: { String: string; }; tb: string }): string {
+    const category = this._categories.value.find(
+      cat => cat.id?.id.String === categoryId.id.String && 
+             cat.id?.tb === categoryId.tb
+    );
+    return category?.name || categoryId.id.String;
+  }
+
+  // Refresh categories
+  async refreshCategories(): Promise<void> {
+    return this.loadCategories(true);
+  }
+}
