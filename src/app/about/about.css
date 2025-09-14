@@ -42,6 +42,17 @@
     }
   }
   
+  /* Custom button hover effect */
+  .custom-hover {
+    transition: all 0.3s ease !important;
+  }
+  
+  .custom-hover:hover, .custom-hover:active {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: white !important;
+  }
+
   /* Animation for feature items */
   @keyframes fadeInUp {
     from {

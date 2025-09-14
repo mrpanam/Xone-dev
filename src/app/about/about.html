@@ -2,20 +2,23 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-8 text-center mb-5">
-          <h1 class="display-4 fw-bold mb-4">About This Application</h1>
+          <div class="d-flex align-items-center justify-content-center gap-3 mb-4">
+            <img src="assets/images/rust-logo.svg" alt="Ferris the Rustacean" style="height: 100px;" class="d-none d-md-block">
+            <h1 class="display-4 fw-bold mb-0">About This Application</h1>
+          </div>
           <p class="lead text-muted">
-            A modern desktop application built with Tauri and Angular
+            A modern desktop application built with Rust, SurrealDB, Tauri and Angular
           </p>
         </div>
       </div>
   
       <div class="row g-4">
         <div class="col-12 col-md-6">
-          <div class="card h-100 border-0 shadow-sm hover-effect">
+          <div class="card h-100 border-0 shadow-sm hover-effect" style="background-color: #ffffcc;">
             <div class="card-body p-4">
               <div class="d-flex align-items-center mb-3">
                 <div class="me-3">
-                  <img src="/assets/tauri.svg" class="img-fluid" style="height: 50px;" alt="Tauri logo" />
+                  <img src="/assets/images/tauri.svg" class="img-fluid" style="height: 50px;" alt="Tauri logo" />
                 </div>
                 <h3 class="h5 mb-0">Tauri</h3>
               </div>
@@ -24,7 +27,7 @@
                 using web technologies.
               </p>
               <div class="d-flex justify-content-between align-items-center mt-3 gap-2">
-                <a href="https://tauri.app" target="_blank" class="btn btn-outline-warning">
+                <a href="https://tauri.app" target="_blank" class="btn btn-outline-warning bg-white custom-hover">
                   Learn more about Tauri
                 </a>
                 <code class="d-inline-block px-2 py-1 bg-dark text-white rounded small">npm run tauri dev</code>
@@ -34,11 +37,11 @@
         </div>
   
         <div class="col-12 col-md-6">
-          <div class="card h-100 border-0 shadow-sm hover-effect">
+          <div class="card h-100 border-0 shadow-sm hover-effect" style="background-color: #ff8080;">
             <div class="card-body p-4">
               <div class="d-flex align-items-center mb-3">
                 <div class="me-3">
-                  <img src="/assets/angular.svg" class="img-fluid" style="height: 50px;" alt="Angular logo" />
+                  <img src="/assets/images/angular.svg" class="img-fluid" style="height: 50px;" alt="Angular logo" />
                 </div>
                 <h3 class="h5 mb-0">Angular</h3>
               </div>
@@ -46,7 +49,7 @@
                 Built with Angular's standalone components for a modern, performant, and maintainable codebase.
               </p>
               <div class="d-flex justify-content-between align-items-center mt-3 gap-2">
-                <a href="https://angular.io" target="_blank" class="btn btn-outline-danger">
+                <a href="https://angular.io" target="_blank" class="btn btn-outline-danger bg-white custom-hover">
                   Learn more about Angular
                 </a>
                 <code class="d-inline-block px-2 py-1 bg-dark text-white rounded small">ng serve</code>
@@ -56,11 +59,11 @@
         </div>
 
         <div class="col-12 col-md-6 mt-4">
-          <div class="card h-100 border-0 shadow-sm hover-effect">
+          <div class="card h-100 border-0 shadow-sm hover-effect" style="background-color: #ffccff;">
             <div class="card-body p-4">
               <div class="d-flex align-items-center mb-3">
                 <div class="me-3">
-                  <img src="/assets/surreal.svg" class="img-fluid" style="height: 50px;" alt="SurrealDB logo" />
+                  <img src="assets/images/surrealdb.svg" class="img-fluid" style="height: 50px;" alt="SurrealDB logo" />
                 </div>
                 <h3 class="h5 mb-0">SurrealDB</h3>
               </div>
@@ -68,9 +71,7 @@
                 Powered by SurrealDB for a flexible, scalable, and efficient database solution with real-time capabilities.
               </p>
               <div class="d-flex justify-content-between align-items-center mt-3 gap-2">
-                <a href="https://surrealdb.com" target="_blank" class="btn btn-outline-primary">
-                  Learn more about SurrealDB
-                </a>
+                <a href="https://surrealdb.com" target="_blank" class="btn bg-white custom-hover" style="color: #ff66b3; border-color: #ff66b3;">Learn more about SurrealDB</a>
                 <code class="d-inline-block px-2 py-1 bg-dark text-white rounded small">surreal start</code>
               </div>
             </div>
@@ -78,11 +79,11 @@
         </div>
 
         <div class="col-12 col-md-6 mt-4">
-          <div class="card h-100 border-0 shadow-sm hover-effect">
+          <div class="card h-100 border-0 shadow-sm hover-effect" style="background-color: #ffcc99;">
             <div class="card-body p-4">
               <div class="d-flex align-items-center mb-3">
                 <div class="me-3">
-                  <img src="/assets/Rust.png" class="img-fluid" style="height: 50px;" alt="Rust logo" />
+                  <img src="assets/images/ferris.svg" class="img-fluid" style="height: 50px;" alt="Ferris the Rustacean" />
                 </div>
                 <h3 class="h5 mb-0">Rust</h3>
               </div>
@@ -90,7 +91,7 @@
                 Built with Rust for high-performance, memory safety, and thread safety. Powering the core functionality with blazing fast execution.
               </p>
               <div class="d-flex justify-content-between align-items-center mt-3 gap-2">
-                <a href="https://www.rust-lang.org/" target="_blank" class="btn btn-outline-warning">
+                <a href="https://www.rust-lang.org/" target="_blank" class="btn btn-outline-warning bg-white custom-hover">
                   Learn more about Rust
                 </a>
                 <code class="d-inline-block px-2 py-1 bg-dark text-white rounded small">cargo run</code>
