@@ -1,0 +1,47 @@
+/* Minimal custom styles to complement Bootstrap */
+
+.card {
+    transition:
+        transform 0.2s ease-in-out,
+        box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+pre code {
+    font-size: 0.875rem;
+    max-height: 300px;
+    overflow-y: auto;
+    display: block;
+}
+
+.card-title .bi {
+    color: var(--bs-primary);
+}
+
+/* Custom scrollbar for debug section */
+pre code::-webkit-scrollbar {
+    width: 8px;
+}
+
+pre code::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+pre code::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+pre code::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
