@@ -1,101 +1,52 @@
-<div class="container-fluid p-4">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4">Trade Categories</h2>
-
-            <!-- Actions -->
-            <div class="mb-4">
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    (click)="refreshCategories()"
-                    [disabled]="tradeService.loading"
-                >
-                    @if (tradeService.loading) {
-                        <span
-                            class="spinner-border spinner-border-sm me-2"
-                            role="status"
-                            aria-hidden="true"
-                        ></span>
-                    }
-                    {{ tradeService.loading ? 'Loading...' : 'Refresh Categories' }}
-                </button>
-            </div>
-
-            <!-- Loading state -->
-            @if (tradeService.loading) {
-                <div class="d-flex justify-content-center align-items-center" style="min-height: 200px">
-                    <div class="text-center">
-                        <div class="spinner-border text-primary mb-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="text-muted">Loading categories...</p>
-                    </div>
-                </div>
-            }
-
-            <!-- Error state -->
-            @if (tradeService.error) {
-                <div class="alert alert-danger" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    {{ tradeService.error }}
-                </div>
-            }
-
-            <!-- Categories display -->
-            <div>
-                @if (!tradeService.loading && !tradeService.error) {
-                    <!-- No categories message -->
-                    @if (tradeService.categories.length === 0) {
-                        <div class="text-center py-5">
-                            <i class="bi bi-folder-x display-1 text-muted mb-3"></i>
-                            <p class="text-muted fs-5">No categories found.</p>
-                        </div>
-                    } @else {
-                        <!-- Categories grid -->
-                        <div class="row g-4 mb-5">
-                            @for (category of tradeService.categories; track category.id) {
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="card h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-primary">
-                                                <i class="bi bi-tag-fill me-2"></i>
-                                                {{ category.name }}
-                                            </h5>
-                                            <p class="card-text text-muted">
-                                                {{ category.description }}
-                                            </p>
-                                        </div>
-                                        @if (category.id) {
-                                            <div class="card-footer bg-light">
-                                                <small class="text-muted">
-                                                    <i class="bi bi-hash me-1"></i>
-                                                    ID: <code>{{ category.id | json }}</code>
-                                                </small>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                }
-            </div>
-            
-            <!-- Debug section -->
-            <div class="mt-5 pt-4 border-top">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="bi bi-bug-fill me-2"></i>
-                            Debug Information
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <pre class="bg-light p-3 rounded"><code>{{ tradeService.categories | json }}</code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="container mt-4">
+    <h2>Trades</h2>
+    
+    <!-- Loading State -->
+    @if (tradeService.tradesLoading) {
+      <div>Loading trades...</div>
+    }
+  
+    <!-- Error State -->
+    @if (tradeService.tradesError) {
+      <div class="error">{{ tradeService.tradesError }}</div>
+    }
+  
+    <!-- Trades Table -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Category</th>
+          <th>Qty</th>
+          <th>Bought</th>
+          <th>Current</th>
+          <th>P/L</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (trade of tradeService.trades; track trade.id) {
+          <tr>
+            <td>{{ trade.symbol }}</td>
+            <td>{{ trade.categoryName || trade.category.id.String }}</td>
+            <td>{{ trade.quantity | number:'1.2-2' }}</td>
+            <td>{{ trade.bought_price | currency:'USD' }}</td>
+            <td>{{ trade.current_price | currency:'USD' }}</td>
+            <td [class]="getProfitLossClass(trade)">
+              {{ getProfitLoss(trade) | currency:'USD' }}
+            </td>
+            <td>{{ trade.status }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7">No trades found</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  
+    <!-- Refresh Button -->
+    <button (click)="refreshTrades()" [disabled]="tradeService.tradesLoading">
+      Refresh
+    </button>
+  </div>

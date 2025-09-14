@@ -39,3 +39,23 @@ pub async fn get_types() -> Result<Vec<model::Category>, String> {
         Err(e) => Err(format!("Database connection failed: {}", e)),
     }
 }
+
+#[tauri::command]
+pub async fn get_trades() -> Result<Vec<model::Trade>, String> {
+    match init().await {
+        Ok(db) => {
+            match db.select::<Vec<model::Trade>>("trade").await {
+                Ok(trades) => {
+                    // Print trades as JSON
+                    if let Ok(json) = serde_json::to_string_pretty(&trades) {
+                        println!("Trades as JSON:\n{}", json);
+                    }
+                    Ok(trades)
+                }
+                Err(e) => Err(format!("Database query failed: {}", e)),
+            }
+        }
+        Err(e) => Err(format!("Database connection failed: {}", e)),
+    }
+}
+    
