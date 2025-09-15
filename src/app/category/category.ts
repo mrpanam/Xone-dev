@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { JsonPipe, AsyncPipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../services/category.service';
 import { Category, SurrealId } from '../models/trade.model';
+
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-category',
@@ -14,6 +16,9 @@ import { Category, SurrealId } from '../models/trade.model';
 export class CategoryComponent {
   showAddForm = false;
   categoryForm: FormGroup;
+  categoryToDelete: { id: string; name: string } | null = null;
+  deleting = false;
+  @ViewChild('deleteModal') deleteModal!: ElementRef;
 
   constructor(
     public categoryService: CategoryService,
@@ -29,6 +34,7 @@ export class CategoryComponent {
     await this.categoryService.loadCategories();
   }
 
+
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
     if (!this.showAddForm) {
@@ -37,14 +43,29 @@ export class CategoryComponent {
   }
 
   // Handle category deletion
-  async deleteCategory(id: string) {
-    if (confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
-      try {
-        await this.categoryService.deleteCategory(id);
-      } catch (error) {
-        console.error('Error deleting category:', error);
-        // Error is already handled by the service
-      }
+  openDeleteModal(category: Category) {
+    if (!category.id?.id?.String) return;
+    
+    this.categoryToDelete = {
+      id: category.id.id.String,
+      name: category.name
+    };
+    
+    const modal = new bootstrap.Modal(this.deleteModal.nativeElement);
+    modal.show();
+  }
+
+  async confirmDelete() {
+    if (!this.categoryToDelete) return;
+    
+    this.deleting = true;
+    try {
+      await this.categoryService.deleteCategory(this.categoryToDelete.id);
+      this.categoryForm.reset();
+      await this.categoryService.loadCategories();
+    } finally {
+      this.deleting = false;
+      this.categoryToDelete = null;
     }
   }
 

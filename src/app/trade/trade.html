@@ -1,69 +1,109 @@
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="mb-0">Trades</h2>
-      <div class="input-group" style="width: 300px;">
-        <span class="input-group-text">
-          <i class="bi bi-search"></i>
-        </span>
-        <input 
-          type="text" 
-          class="form-control" 
-          placeholder="Search trades..."
-          [(ngModel)]="searchTerm">
+<div class="container-fluid py-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-white border-bottom-0 py-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0 fw-bold">
+          <i class="bi bi-graph-up me-2"></i>Trades
+        </h2>
+        <div class="d-flex gap-2">
+          <div class="input-group" style="width: 280px;">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="bi bi-search text-muted"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control border-start-0" 
+              placeholder="Search trades..."
+              [(ngModel)]="searchTerm"
+              style="border-left: 0 !important;">
+          </div>
+          <button 
+            class="btn btn-outline-primary" 
+            (click)="refreshTrades()" 
+            [disabled]="tradeService.tradesLoading"
+            title="Refresh trades">
+            <i class="bi" [class.bi-arrow-clockwise]="!tradeService.tradesLoading" [class.bi-arrow-repeat]="tradeService.tradesLoading" [class.spin]="tradeService.tradesLoading"></i>
+            <span class="d-none d-md-inline ms-1">Refresh</span>
+          </button>
+        </div>
       </div>
     </div>
-    
-    <!-- Loading State -->
+
     @if (tradeService.tradesLoading) {
-      <div>Loading trades...</div>
+      <div class="card-body text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 mb-0 text-muted">Loading trades...</p>
+      </div>
+    } @else if (tradeService.tradesError) {
+      <div class="alert alert-danger m-3" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        {{ tradeService.tradesError }}
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light-red">
+            <tr>
+              <th class="text-center" style="width: 60px;">#</th>
+              <th>Symbol</th>
+              <th>Category</th>
+              <th class="text-end">Qty</th>
+              <th class="text-end">Bought</th>
+              <th class="text-end">Current</th>
+              <th class="text-end">P/L</th>
+              <th class="text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (trade of tradeService.trades | filterTrades:searchTerm; track trade.id; let i = $index) {
+              <tr class="position-relative">
+                <td class="text-center text-muted fw-light">{{ i + 1 }}</td>
+                <td>
+                  <span class="fw-semibold">{{ trade.symbol }}</span>
+                </td>
+                <td>
+                  <span class="category-badge" [ngClass]="'category-badge-' + (trade.categoryName || trade.category.id.String | lowercase)">
+                    {{ trade.categoryName || trade.category.id.String }}
+                  </span>
+                </td>
+                <td class="text-end">{{ trade.quantity | number:'1.2-2' }}</td>
+                <td class="text-end">{{ trade.bought_price | currency:'USD' }}</td>
+                <td class="text-end fw-medium">{{ trade.current_price | currency:'USD' }}</td>
+                <td class="text-end fw-bold" [ngClass]="getProfitLossClass(trade)">
+                  {{ getProfitLoss(trade) | currency:'USD' }}
+                </td>
+                <td class="text-center">
+                  <span class="badge" [ngClass]="{
+                    'bg-success bg-opacity-10 text-success': trade.status && trade.status.toLowerCase() === 'open',
+                    'bg-danger bg-opacity-10 text-danger': trade.status && trade.status.toLowerCase() === 'closed',
+                    'bg-warning bg-opacity-10 text-warning': !trade.status || !['open', 'closed'].includes(trade.status.toLowerCase())
+                  }">
+                    {{ trade.status || 'N/A' }}
+                  </span>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="text-center py-4">
+                  <div class="text-muted">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No trades found
+                    @if (searchTerm) {
+                      <div class="mt-2">
+                        <button class="btn btn-sm btn-outline-secondary" (click)="searchTerm = ''">
+                          Clear search
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     }
-  
-    <!-- Error State -->
-    @if (tradeService.tradesError) {
-      <div class="error">{{ tradeService.tradesError }}</div>
-    }
-  
-    <!-- Trades Table -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Symbol</th>
-          <th>Category</th>
-          <th>Qty</th>
-          <th>Bought</th>
-          <th>Current</th>
-          <th>P/L</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (trade of tradeService.trades | filterTrades:searchTerm; track trade.id) {
-          <tr>
-            <td>{{ trade.symbol }}</td>
-            <td>{{ trade.categoryName || trade.category.id.String }}</td>
-            <td>{{ trade.quantity | number:'1.2-2' }}</td>
-            <td>{{ trade.bought_price | currency:'USD' }}</td>
-            <td>{{ trade.current_price | currency:'USD' }}</td>
-            <td [class]="getProfitLossClass(trade)">
-              {{ getProfitLoss(trade) | currency:'USD' }}
-            </td>
-            <td>{{ trade.status }}</td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="7">No trades found</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  
-    <!-- Refresh Button -->
-    <div class="mt-3">
-      <button 
-        class="btn btn-outline-secondary" 
-        (click)="refreshTrades()" 
-        [disabled]="tradeService.tradesLoading">
-        <i class="bi bi-arrow-clockwise"></i> Refresh
-      </button>
-    </div>
   </div>
+</div>

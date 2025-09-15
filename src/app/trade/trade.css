@@ -1,23 +1,253 @@
-/* Minimal custom styles to complement Bootstrap */
+/* Table styling */
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.02);
+  margin-bottom: 0;
+}
 
+.table th {
+  border-top: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #000000;
+  padding: 1rem 1.5rem;
+  border-bottom-width: 1px;
+}
+
+.table td {
+  padding: 1rem 1.5rem;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
+}
+
+.table-hover > tbody > tr:hover > * {
+  --bs-table-accent-bg: rgba(0, 0, 0, 0.02);
+}
+
+.bg-light-red {
+  background-color: #f70606a6;
+}
+
+/* Category badges */
+.category-badge {
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+  border-radius: 12px;
+  font-size: 0.75em;
+  background-color: #e9ecef;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease;
+}
+
+/* Generate distinct colors for categories */
+:root {
+  --category-crypto: #6610f2;
+  --category-forex: #0dcaf0;
+  --category-stocks: #198754;
+  --category-commodities: #fd7e14;
+  --category-indices: #6f42c1;
+  --category-etf: #20c997;
+  --category-options: #ffc107;
+  --category-futures: #6c757d;
+}
+
+.category-badge-crypto {
+  background-color: rgba(102, 16, 242, 0.1);
+  color: #4a0bd9;
+  border-color: rgba(102, 16, 242, 0.2);
+}
+
+.category-badge-crypto:hover {
+  background-color: rgba(102, 16, 242, 0.15);
+}
+
+.category-badge-forex {
+  background-color: rgba(13, 202, 240, 0.1);
+  color: #0ba8cc;
+  border-color: rgba(13, 202, 240, 0.2);
+}
+
+.category-badge-forex:hover {
+  background-color: rgba(13, 202, 240, 0.15);
+}
+
+.category-badge-stocks {
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #146c43;
+  border-color: rgba(25, 135, 84, 0.2);
+}
+
+.category-badge-stocks:hover {
+  background-color: rgba(25, 135, 84, 0.15);
+}
+
+.category-badge-commodities {
+  background-color: rgba(253, 126, 20, 0.1);
+  color: #d9480f;
+  border-color: rgba(253, 126, 20, 0.2);
+}
+
+.category-badge-commodities:hover {
+  background-color: rgba(253, 126, 20, 0.15);
+}
+
+.category-badge-indices {
+  background-color: rgba(111, 66, 193, 0.1);
+  color: #5a2ea0;
+  border-color: rgba(111, 66, 193, 0.2);
+}
+
+.category-badge-indices:hover {
+  background-color: rgba(111, 66, 193, 0.15);
+}
+
+.category-badge-etf {
+  background-color: rgba(32, 201, 151, 0.1);
+  color: #199d74;
+  border-color: rgba(32, 201, 151, 0.2);
+}
+
+.category-badge-etf:hover {
+  background-color: rgba(32, 201, 151, 0.15);
+}
+
+.category-badge-options {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #d39e00;
+  border-color: rgba(255, 193, 7, 0.2);
+}
+
+.category-badge-options:hover {
+  background-color: rgba(255, 193, 7, 0.15);
+}
+
+.category-badge-futures {
+  background-color: rgba(108, 117, 125, 0.1);
+  color: #5a6268;
+  border-color: rgba(108, 117, 125, 0.2);
+}
+
+.category-badge-futures:hover {
+  background-color: rgba(108, 117, 125, 0.15);
+}
+
+/* Status badges */
+.badge {
+  font-weight: 600;
+  padding: 0.5em 0.9em;
+  border-radius: 6px;
+  font-size: 0.8em;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  min-width: 80px;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.badge.bg-success {
+  background-color: #d1e7dd !important;
+  color: #0f5132 !important;
+  border-color: #badbcc;
+}
+
+.badge.bg-danger {
+  background-color: #f8d7da !important;
+  color: #842029 !important;
+  border-color: #f5c2c7;
+}
+
+.badge.bg-warning {
+  background-color: #fff3cd !important;
+  color: #664d03 !important;
+  border-color: #ffecb5;
+}
+
+/* Profit/Loss colors */
+.profit {
+  color: #198754;
+}
+
+.loss {
+  color: #dc3545;
+}
+
+.neutral {
+  color: #6c757d;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+/* Card styling */
 .card {
-    transition:
-        transform 0.2s ease-in-out,
-        box-shadow 0.2s ease-in-out;
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: 
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+/* Search input */
+.input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-responsive {
+    border: none;
+  }
+  
+  .table th, .table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .card-header {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Animation for empty state */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.text-muted i {
+  animation: fadeIn 0.5s ease-out;
+  opacity: 0.3;
 }
 
 .spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 pre code {
-    font-size: 0.875rem;
+  font-size: 0.875rem;
     max-height: 300px;
     overflow-y: auto;
     display: block;

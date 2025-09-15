@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, JsonPipe, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, JsonPipe, CurrencyPipe, DatePipe, DecimalPipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TradeService } from '../services/trade.service';
 import { Trade } from '../models/trade.model';
@@ -11,10 +11,12 @@ import { FilterTradesPipe } from '../pipes/filter-trades.pipe';
   imports: [
     JsonPipe, 
     CurrencyPipe, 
-    DatePipe, 
     DecimalPipe,
+    DatePipe,
+    CommonModule,
     FormsModule,
-    FilterTradesPipe
+    FilterTradesPipe,
+    NgClass
   ],
   templateUrl: './trade.html',
   styleUrls: ['./trade.css'],
