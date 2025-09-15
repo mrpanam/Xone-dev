@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { invoke } from '@tauri-apps/api/core';
 import { Trade } from '../models/trade.model';
+import { invoke } from '@tauri-apps/api/core';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,12 @@ export class TradeService {
 
   async refreshTrades(): Promise<void> {
     await this.loadTrades();
+  }
+
+  getTotalPnL(): number {
+    if (!this._trades || this._trades.length === 0) return 0;
+    return this._trades.reduce((total, trade) => {
+      return total + ((trade.current_price - trade.bought_price) * trade.quantity);
+    }, 0);
   }
 }

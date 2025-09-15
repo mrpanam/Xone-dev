@@ -102,6 +102,16 @@
               </tr>
             }
           </tbody>
+          <!-- Total PnL Row -->
+          <tfoot class="table-group-divider">
+            <tr class="table-active">
+              <td colspan="5" class="text-end fw-bold">Total P/L:</td>
+              <td class="text-end fw-bold" [ngClass]="getTotalPnL() >= 0 ? 'text-success' : 'text-danger'">
+                {{ getTotalPnL() | currency:'USD' }}
+              </td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     }

@@ -51,4 +51,8 @@ export class TradeComponent implements OnInit {
     const pnl = this.getProfitLoss(trade);
     return pnl >= 0 ? 'text-success' : 'text-danger';
   }
+
+  getTotalPnL(): number {
+    return this.tradeService.getTotalPnL();
+  }
 }
