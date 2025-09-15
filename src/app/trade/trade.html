@@ -1,5 +1,17 @@
 <div class="container mt-4">
-    <h2>Trades</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0">Trades</h2>
+      <div class="input-group" style="width: 300px;">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search trades..."
+          [(ngModel)]="searchTerm">
+      </div>
+    </div>
     
     <!-- Loading State -->
     @if (tradeService.tradesLoading) {
@@ -25,7 +37,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (trade of tradeService.trades; track trade.id) {
+        @for (trade of tradeService.trades | filterTrades:searchTerm; track trade.id) {
           <tr>
             <td>{{ trade.symbol }}</td>
             <td>{{ trade.categoryName || trade.category.id.String }}</td>
@@ -46,7 +58,12 @@
     </table>
   
     <!-- Refresh Button -->
-    <button (click)="refreshTrades()" [disabled]="tradeService.tradesLoading">
-      Refresh
-    </button>
+    <div class="mt-3">
+      <button 
+        class="btn btn-outline-secondary" 
+        (click)="refreshTrades()" 
+        [disabled]="tradeService.tradesLoading">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+      </button>
+    </div>
   </div>

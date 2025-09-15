@@ -1,17 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { JsonPipe, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, JsonPipe, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { TradeService } from '../services/trade.service';
 import { Trade } from '../models/trade.model';
+import { FilterTradesPipe } from '../pipes/filter-trades.pipe';
 
 @Component({
   selector: 'app-trade',
   standalone: true,
-  imports: [JsonPipe, CurrencyPipe, DatePipe, DecimalPipe],
+  imports: [
+    JsonPipe, 
+    CurrencyPipe, 
+    DatePipe, 
+    DecimalPipe,
+    FormsModule,
+    FilterTradesPipe
+  ],
   templateUrl: './trade.html',
   styleUrls: ['./trade.css'],
-  providers: [TradeService]
+  providers: [TradeService],
 })
 export class TradeComponent implements OnInit {
+  searchTerm = '';
+  
   constructor(public tradeService: TradeService) {}
 
   async ngOnInit() {
