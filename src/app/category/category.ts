@@ -36,6 +36,18 @@ export class CategoryComponent {
     }
   }
 
+  // Handle category deletion
+  async deleteCategory(id: string) {
+    if (confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
+      try {
+        await this.categoryService.deleteCategory(id);
+      } catch (error) {
+        console.error('Error deleting category:', error);
+        // Error is already handled by the service
+      }
+    }
+  }
+
   async onSubmit() {
     if (this.categoryForm.valid) {
       const { name, description } = this.categoryForm.value;  

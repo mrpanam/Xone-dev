@@ -139,18 +139,26 @@
                                                 <i class="bi bi-tag-fill me-2"></i>
                                                 {{ category.name }}
                                             </h5>
-                                            <p class="card-text text-muted">
+                                            <p class="card-text text-muted mb-3">
                                                 {{ category.description }}
                                             </p>
-                                        </div>
-                                        @if (category.id) {
-                                            <div class="card-footer bg-light">
-                                                <small class="text-muted">
-                                                    <i class="bi bi-hash me-1"></i>
-                                                    ID: <code>{{ category.id | json }}</code>
-                                                </small>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                @if (category.id?.id?.String) {
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-hash me-1"></i>
+                                                        ID: <code>{{ category.id?.id?.String }}</code>
+                                                    </small>
+                                                }
+                                                <button 
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    (click)="$event.stopPropagation(); deleteCategory(category.id?.id?.String || '')"
+                                                    [disabled]="(categoryService.loading$ | async)"
+                                                    title="Delete category"
+                                                >
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
                                             </div>
-                                        }
+                                        </div>
                                     </div>
                                 </div>
                             }

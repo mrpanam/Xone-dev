@@ -45,6 +45,26 @@ export class CategoryService {
     return this._categories.value.find(cat => cat.id?.id.String === id);
   }
 
+  // Delete a category
+  async deleteCategory(id: string): Promise<void> {
+    if (this._loading.value) return;
+    
+    this._loading.next(true);
+    this._error.next(null);
+
+    try {
+      await invoke('delete_category', { id });
+      // Remove the category from the local state
+      this._categories.next(this._categories.value.filter(cat => cat.id?.id.String !== id));
+    } catch (error) {
+      const errorMessage = `Failed to delete category: ${error}`;
+      this._error.next(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      this._loading.next(false);
+    }
+  }
+
   // Refresh categories
   async refreshCategories(): Promise<void> {
     return this.loadCategories(true);

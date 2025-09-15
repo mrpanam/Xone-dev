@@ -20,7 +20,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             db::get_types,
             db::get_trades,
-            category::create_category
+            category::create_category,
+            category::delete_category
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -27,3 +27,16 @@ pub async fn create_category(id: String, name: String, description: String) -> R
         None => Err("Failed to create category".to_string()),
     }
 }
+
+#[tauri::command]
+pub async fn delete_category(id: String) -> Result<(), String> {
+    let db = init().await.map_err(|e| e.to_string())?;
+    
+    // Delete the category using the (table, id) tuple syntax
+    let _: Option<model::Category> = db.delete(("category", id.as_str()))
+        .await
+        .map_err(|e| e.to_string())?;
+    
+    println!("Deleted category with ID: {}", id);
+    Ok(())
+}
