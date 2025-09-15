@@ -72,6 +72,6 @@ export class HomeComponent implements OnInit {
   }
 
   getProfitLoss(trade: Trade): number {
-    return (trade.current_price - trade.bought_price) * trade.quantity;
+    return this.tradeService.getProfitLoss(trade);
   }
 }
