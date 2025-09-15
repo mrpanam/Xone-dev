@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { invoke } from '@tauri-apps/api/core';
 import { Trade } from '../models/trade.model';
-import { CategoryService } from './category.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,28 +14,17 @@ export class TradeService {
     return [...this._trades];
   }
 
-  constructor(private categoryService: CategoryService) {}
+  constructor() {}
 
-  async loadTrades(forceRefresh = false): Promise<void> {
+  async loadTrades(): Promise<void> {
     this.tradesLoading = true;
     this.tradesError = null;
 
     try {
-      // First ensure categories are loaded
-      await this.categoryService.loadCategories(forceRefresh);
-      
-      // Then load trades
-      const trades = await invoke<Trade[]>('get_trades');
-      console.log('Trades loaded:', trades);
-      
-      // Map category names to trades
-      this._trades = trades.map(trade => ({
-        ...trade,
-        categoryName: this.categoryService.getCategoryName(trade.category)
-      }));
+      // Load trades
+      this._trades = await invoke<Trade[]>('get_trades');
     } catch (error) {
-      this.tradesError = `Failed to load trades: ${error}`;
-      console.error('Error loading trades:', error);
+      this.tradesError = `Failed to load trades: ${error}`;      
       throw error;
     } finally {
       this.tradesLoading = false;

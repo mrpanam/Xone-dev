@@ -30,12 +30,10 @@ export class CategoryService {
 
     try {
       const categories = await invoke<Category[]>('get_types');
-      console.log('Categories loaded:', categories);
       this._categories.next(categories);
     } catch (error) {
       const errorMessage = `Failed to load categories: ${error}`;
-      this._error.next(errorMessage);
-      console.error('Error loading categories:', error);
+      this._error.next(errorMessage);      
       throw new Error(errorMessage);
     } finally {
       this._loading.next(false);
@@ -45,15 +43,6 @@ export class CategoryService {
   // Get category by ID
   getCategoryById(id: string): Category | undefined {
     return this._categories.value.find(cat => cat.id?.id.String === id);
-  }
-
-  // Get category name by ID
-  getCategoryName(categoryId: { id: { String: string; }; tb: string }): string {
-    const category = this._categories.value.find(
-      cat => cat.id?.id.String === categoryId.id.String && 
-             cat.id?.tb === categoryId.tb
-    );
-    return category?.name || categoryId.id.String;
   }
 
   // Refresh categories

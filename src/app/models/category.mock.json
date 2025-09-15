@@ -1,0 +1,52 @@
+[
+  {
+    "id": {
+      "tb": "category",
+      "id": {
+        "String": "bonds"
+      }
+    },
+    "name": "bonds",
+    "description": "Fixed income securities"
+  },
+  {
+    "id": {
+      "tb": "category",
+      "id": {
+        "String": "commodities"
+      }
+    },
+    "name": "commodities",
+    "description": "Global world commodities assets"
+  },
+  {
+    "id": {
+      "tb": "category",
+      "id": {
+        "String": "crypto"
+      }
+    },
+    "name": "crypto",
+    "description": "Cryptocurrency assets"
+  },
+  {
+    "id": {
+      "tb": "category",
+      "id": {
+        "String": "forex"
+      }
+    },
+    "name": "forex",
+    "description": "Forex trades"
+  },
+  {
+    "id": {
+      "tb": "category",
+      "id": {
+        "String": "stocks"
+      }
+    },
+    "name": "stocks",
+    "description": "Stock market investments"
+  }
+]

@@ -1,0 +1,222 @@
+[
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "7qys4sux4b62w3gdm7gy"
+      }
+    },
+    "symbol": "US10Y",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "bonds"
+      }
+    },
+    "status": "pending",
+    "quantity": 5.0,
+    "bought_price": 98.5,
+    "current_price": 99.25,
+    "timestamp": "2025-09-07T11:20:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "9mpvomdjk7kvg7zttdxj"
+      }
+    },
+    "symbol": "ETH-USD",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "crypto"
+      }
+    },
+    "status": "open",
+    "quantity": 2.0,
+    "bought_price": 3200.0,
+    "current_price": 3450.75,
+    "timestamp": "2025-09-08T16:10:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "amovata40014154oa0a5"
+      }
+    },
+    "symbol": "GOLD",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "commodities"
+      }
+    },
+    "status": "open",
+    "quantity": 50.0,
+    "bought_price": 1945.25,
+    "current_price": 1972.1,
+    "timestamp": "2025-09-10T15:25:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "eocyz2ddqm4mbkq8eh2k"
+      }
+    },
+    "symbol": "TESLA",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "stocks"
+      }
+    },
+    "status": "pending",
+    "quantity": 8.0,
+    "bought_price": 725.0,
+    "current_price": 730.25,
+    "timestamp": "2025-09-09T13:40:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "eyuksdm0e6r7arwethb2"
+      }
+    },
+    "symbol": "BTC-USD",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "crypto"
+      }
+    },
+    "status": "open",
+    "quantity": 0.5,
+    "bought_price": 45000.0,
+    "current_price": 47250.5,
+    "timestamp": "2025-09-01T10:30:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "g5psm4twzzi9cgphzkqe"
+      }
+    },
+    "symbol": "US30Y",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "bonds"
+      }
+    },
+    "status": "closed",
+    "quantity": 3.0,
+    "bought_price": 101.75,
+    "current_price": 103.2,
+    "timestamp": "2025-09-02T12:05:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "hakjab0q0nt5mzveh5ka"
+      }
+    },
+    "symbol": "OIL",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "commodities"
+      }
+    },
+    "status": "open",
+    "quantity": 20.0,
+    "bought_price": 82.3,
+    "current_price": 85.75,
+    "timestamp": "2025-09-11T09:50:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "kuvtf6n5inff6t584mnv"
+      }
+    },
+    "symbol": "MSFT",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "stocks"
+      }
+    },
+    "status": "closed",
+    "quantity": 15.0,
+    "bought_price": 290.4,
+    "current_price": 305.1,
+    "timestamp": "2025-09-04T10:00:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "qaz32c3y0c4a5migwv56"
+      }
+    },
+    "symbol": "EUR/USD",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "forex"
+      }
+    },
+    "status": "closed",
+    "quantity": 1000.0,
+    "bought_price": 1.0845,
+    "current_price": 1.0892,
+    "timestamp": "2025-09-03T09:15:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "qoa4p26zljj8nkmmmxs6"
+      }
+    },
+    "symbol": "GBP/USD",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "forex"
+      }
+    },
+    "status": "open",
+    "quantity": 2000.0,
+    "bought_price": 1.2675,
+    "current_price": 1.271,
+    "timestamp": "2025-09-06T08:30:00Z"
+  },
+  {
+    "id": {
+      "tb": "trade",
+      "id": {
+        "String": "vrbu79vr7cyggk97hswx"
+      }
+    },
+    "symbol": "AAPL",
+    "category": {
+      "tb": "category",
+      "id": {
+        "String": "stocks"
+      }
+    },
+    "status": "open",
+    "quantity": 10.0,
+    "bought_price": 175.25,
+    "current_price": 182.75,
+    "timestamp": "2025-09-05T14:45:00Z"
+  }
+]
