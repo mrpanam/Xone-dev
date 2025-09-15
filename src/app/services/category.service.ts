@@ -49,4 +49,24 @@ export class CategoryService {
   async refreshCategories(): Promise<void> {
     return this.loadCategories(true);
   }
+
+  // Create a new category
+  async createCategory(category: Category): Promise<void> {
+    try {
+      if (!category.id) {
+        throw new Error('Category ID is required');
+      }
+      
+      await invoke('create_category', { 
+        id: category.id.id.String,
+        name: category.name,
+        description: category.description 
+      });
+      await this.refreshCategories();
+    } catch (error) {
+      const errorMessage = `Failed to create category: ${error}`;
+      this._error.next(errorMessage);
+      throw new Error(errorMessage);
+    }
+  }
 }

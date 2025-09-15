@@ -4,7 +4,7 @@
             <h2 class="mb-4">Trade Categories</h2>
 
             <!-- Actions -->
-            <div class="mb-4">
+            <div class="d-flex gap-2 mb-4">
                 <button
                     type="button"
                     class="btn btn-primary"
@@ -18,9 +18,86 @@
                             aria-hidden="true"
                         ></span>
                     }
-                    {{ (categoryService.loading$ | async) ? 'Loading...' : 'Refresh Categories' }}
+                    {{ (categoryService.loading$ | async) ? 'Loading...' : 'Refresh' }}
+                </button>
+                <button 
+                    type="button" 
+                    class="btn btn-success"
+                    (click)="toggleAddForm()"
+                    [disabled]="(categoryService.loading$ | async)"
+                >
+                    <i class="bi bi-plus-lg me-1"></i> Add Category
                 </button>
             </div>
+
+            <!-- Add Category Form -->
+            @if (showAddForm) {
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Add New Category</h5>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+                            <div class="mb-3">
+                                <label for="categoryName" class="form-label">Name</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="categoryName"
+                                    formControlName="name"
+                                    [class.is-invalid]="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched"
+                                >
+                                @if (categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched) {
+                                    <div class="invalid-feedback">
+                                        @if (categoryForm.get('name')?.errors?.['required']) {
+                                            <div>Name is required</div>
+                                        }
+                                        @if (categoryForm.get('name')?.errors?.['minlength']) {
+                                            <div>Name must be at least 2 characters</div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="categoryDescription" class="form-label">Description</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="categoryDescription" 
+                                    rows="2"
+                                    formControlName="description"
+                                    [class.is-invalid]="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched"
+                                ></textarea>
+                                @if (categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched) {
+                                    <div class="invalid-feedback">
+                                        Description is required
+                                    </div>
+                                }
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-outline-secondary" 
+                                    (click)="toggleAddForm()"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary"
+                                    [disabled]="!categoryForm.valid || (categoryService.loading$ | async)"
+                                >
+                                    @if (categoryService.loading$ | async) {
+                                        <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+                                        Adding...
+                                    } @else {
+                                        Add Category
+                                    }
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
 
             <!-- Loading state -->
             @if (categoryService.loading$ | async) {
