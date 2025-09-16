@@ -24,6 +24,8 @@ import { FilterTradesPipe } from '../pipes/filter-trades.pipe';
 })
 export class TradeComponent implements OnInit {
   searchTerm = '';
+  sortField: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
   
   constructor(public tradeService: TradeService) {}
 
@@ -59,5 +61,24 @@ export class TradeComponent implements OnInit {
   getPercentageChange(trade: Trade): number {
     if (!trade.bought_price || trade.bought_price === 0) return 0;
     return ((trade.current_price - trade.bought_price) / trade.bought_price) * 100;
+  }
+
+  sortTrades(field: string): void {
+    if (this.sortField === field) {
+      // Toggle sort direction if the same field is clicked
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Default to ascending when a new field is selected
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+    
+    // Call the service to sort the trades
+    this.tradeService.sortTrades(field, this.sortDirection);
+  }
+
+  getSortIcon(field: string): string {
+    if (this.sortField !== field) return 'bi-arrow-down';
+    return this.sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down';
   }
 }

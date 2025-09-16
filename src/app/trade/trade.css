@@ -5,6 +5,28 @@
   margin-bottom: 0;
 }
 
+/* Sortable header styles */
+.sortable-header {
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  padding-right: 1.5rem !important;
+}
+
+.sortable-header i {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.sortable-header:hover i {
+  color: #0d6efd;
+}
+
 .table th {
   border-top: none;
   font-weight: 600;

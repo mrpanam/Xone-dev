@@ -48,13 +48,19 @@
             <tr>
               <th class="text-center" style="width: 60px;">#</th>
               <th>Symbol</th>
-              <th>Category</th>
-              <th class="text-end">Qty</th>
+              <th (click)="sortTrades('category')" class="sortable-header pe-4" style="width: 120px;">
+                Category
+                <i class="bi ms-1" [class]="getSortIcon('category')"></i>
+              </th>
+              <th class="text-end pe-3">Qty</th>
               <th class="text-end">Bought</th>
               <th class="text-end">Current</th>
-              <th class="text-end">P/L</th>
-              <th class="text-end">% Chg</th>
-              <th class="text-center">Status</th>
+              <th class="text-end pe-3">P/L</th>
+              <th class="text-end pe-3">% Chg</th>
+              <th (click)="sortTrades('status')" class="sortable-header text-center pe-3" style="width: 100px;">
+                Status
+                <i class="bi ms-1" [class]="getSortIcon('status')"></i>
+              </th>
             </tr>
           </thead>
           <tbody>
