@@ -42,6 +42,7 @@ export class TradeService {
   getTotalPnL(): number {
     if (!this._trades || this._trades.length === 0) return 0;
     return this._trades.reduce((total, trade) => {
+
       return total + this.getProfitLoss(trade);
     }, 0);
   }

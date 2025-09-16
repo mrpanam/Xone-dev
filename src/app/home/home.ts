@@ -1,41 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { TradeService } from '../services/trade.service';
 import { Trade } from '../models/trade.model';
+import { User } from '../models/user.model';
+import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DecimalPipe],
+  imports: [CommonModule, CurrencyPipe, DecimalPipe, NgIf],
   templateUrl: './home.html',
-  styles: [`
-    .card {
-      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-      border: none;
-      border-radius: 0.5rem;
-      transition: transform 0.2s ease-in-out;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-    }
-    .card-title {
-      color: #333;
-      font-weight: 600;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-    .display-4 {
-      font-size: 2.5rem;
-      font-weight: 600;
-    }
-  `]
+  styleUrl: './home.css', 
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('stocksChart') private chartRef!: ElementRef;
   totalPnL = 0;
-  totalAssets = 0; // Will be implemented later
+  totalAssets = 0;
   recentTrades: Trade[] = [];
+  topStocks: { symbol: string; change: number; currentPrice: number }[] = [];
+  chart: any;
   loading = true;
+  user: User = {
+    id: 'user123',
+    name: 'Eric Paris',
+    email: 'john.doe@example.com',
+    avatar: 'https://ui-avatars.com/api/?name=Eric+Paris&background=000000&color=fff&size=128',
+    balance: 12500.75,
+    level: 24,
+    rating: 4.8,
+    tradesCompleted: 156
+  };
 
   constructor(private tradeService: TradeService) {}
 
@@ -49,11 +45,179 @@ export class HomeComponent implements OnInit {
       await this.tradeService.loadTrades();
       this.updateTotals();
       this.updateRecentTrades();
+      this.updateTopStocks();
+      this.updateChart();
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
       this.loading = false;
     }
+  }
+
+  private updateTopStocks() {
+    console.log('Updating top stocks...');
+    console.log('Trades:', this.tradeService.trades);
+    
+    // Group trades by symbol and calculate average change
+    const stocksMap = new Map<string, { sum: number; count: number; currentPrice: number }>();
+    
+    this.tradeService.trades.forEach((trade: Trade) => {
+      if (!stocksMap.has(trade.symbol)) {
+        stocksMap.set(trade.symbol, { 
+          sum: this.calculatePercentageChange(trade), 
+          count: 1, 
+          currentPrice: trade.current_price 
+        });
+      } else {
+        const stock = stocksMap.get(trade.symbol)!;
+        stock.sum += this.calculatePercentageChange(trade);
+        stock.count++;
+        // Keep the latest price
+        stock.currentPrice = trade.current_price;
+      }
+    });
+
+    // Convert to array, calculate average and sort by absolute change
+    this.topStocks = Array.from(stocksMap.entries())
+      .map(([symbol, data]) => ({
+        symbol,
+        change: data.sum / data.count,
+        currentPrice: data.currentPrice
+      }))
+      .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+      .slice(0, 5); // Get top 5
+  }
+
+  private calculatePercentageChange(trade: Trade): number {
+    if (!trade.bought_price || trade.bought_price === 0) return 0;
+    return ((trade.current_price - trade.bought_price) / trade.bought_price) * 100;
+  }
+
+  private updateChart() {
+    if (!this.topStocks.length || !this.chartRef) return;
+    
+    // Register the datalabels plugin
+    Chart.register(ChartDataLabels);
+
+    const ctx = this.chartRef.nativeElement.getContext('2d');
+    
+    // Destroy previous chart if it exists
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const labels = this.topStocks.map(stock => stock.symbol);
+    const data = this.topStocks.map(stock => stock.change);
+    const colors = data.map(change => 
+      change > 0 ? 'rgba(40, 167, 69, 0.8)' : 'rgba(220, 53, 69, 0.8)'
+    );
+
+    this.chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: colors,
+          borderColor: colors.map(color => color.replace('0.8', '1')),
+          borderWidth: 0,
+          borderRadius: 6,
+          barPercentage: 0.6,
+          categoryPercentage: 0.8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            top: 20,
+            right: 20,
+            bottom: 10,
+            left: 10
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          datalabels: {
+            anchor: 'end',
+            align: 'top',
+            formatter: (value: number) => `${value > 0 ? '+' : ''}${value.toFixed(2)}%`,
+            color: (context: any) => {
+              return context.dataset.data[context.dataIndex] > 0 
+                ? 'rgba(40, 167, 69, 1)' 
+                : 'rgba(220, 53, 69, 1)';
+            },
+            font: {
+              weight: 'bold',
+              size: 11
+            },
+            padding: {
+              top: 4
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(33, 37, 41, 0.95)',
+            titleColor: '#fff',
+            bodyColor: '#dee2e6',
+            borderColor: 'rgba(255, 255, 255, 0.1)',
+            borderWidth: 1,
+            padding: 12,
+            displayColors: false,
+            callbacks: {
+              label: (context: any) => {
+                const stock = this.topStocks[context.dataIndex];
+                return [
+                  `Change: ${context.parsed.y.toFixed(2)}%`,
+                  `Price: ${stock.currentPrice.toFixed(2)}`
+                ];
+              },
+              title: () => '' // Remove the title
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            },
+            border: {
+              display: false
+            },
+            ticks: {
+              color: '#6c757d',
+              font: {
+                size: 12
+              },
+              padding: 8,
+              callback: (value: any) => `${value}%`
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            border: {
+              display: false
+            },
+            ticks: {
+              color: '#212529',
+              font: {
+                weight: 600 as const,
+                size: 13
+              }
+            }
+          }
+        },
+        animation: {
+          duration: 800,
+          easing: 'easeOutQuart'
+        }
+      }
+    });
   }
 
   private updateTotals() {
@@ -65,10 +229,27 @@ export class HomeComponent implements OnInit {
   }
 
   private updateRecentTrades() {
-    // Get the 5 most recent trades
-    this.recentTrades = [...this.tradeService.trades]
+    console.log('All trades from service:', this.tradeService.trades);
+    
+    const sortedTrades = [...this.tradeService.trades]
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .slice(0, 5);
+      
+    console.log('Top 5 trades after sorting:', sortedTrades);
+    
+    this.recentTrades = sortedTrades.map(trade => {
+      const status = trade.status ? String(trade.status).toLowerCase() : 'pending';
+      console.log(`Trade ${trade.symbol} status:`, { 
+        originalStatus: trade.status, 
+        processedStatus: status,
+        type: typeof trade.status
+      });
+      
+      return {
+        ...trade,
+        status
+      };
+    });
   }
 
   getProfitLoss(trade: Trade): number {

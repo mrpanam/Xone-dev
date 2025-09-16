@@ -53,6 +53,7 @@
               <th class="text-end">Bought</th>
               <th class="text-end">Current</th>
               <th class="text-end">P/L</th>
+              <th class="text-end">% Chg</th>
               <th class="text-center">Status</th>
             </tr>
           </thead>
@@ -73,6 +74,13 @@
                 <td class="text-end fw-medium">{{ trade.current_price | currency:'USD' }}</td>
                 <td class="text-end fw-bold" [ngClass]="getProfitLossClass(trade)">
                   {{ getProfitLoss(trade) | currency:'USD' }}
+                </td>
+                <td class="text-end fw-medium" [ngClass]="{
+                  'text-success': getPercentageChange(trade) > 0,
+                  'text-danger': getPercentageChange(trade) < 0,
+                  'text-muted': getPercentageChange(trade) === 0
+                }">
+                  {{ getPercentageChange(trade) | number:'1.2-2' }}%
                 </td>
                 <td class="text-center">
                   <span class="badge" [ngClass]="{

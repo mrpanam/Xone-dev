@@ -55,4 +55,9 @@ export class TradeComponent implements OnInit {
   getTotalPnL(): number {
     return this.tradeService.getTotalPnL();
   }
+
+  getPercentageChange(trade: Trade): number {
+    if (!trade.bought_price || trade.bought_price === 0) return 0;
+    return ((trade.current_price - trade.bought_price) / trade.bought_price) * 100;
+  }
 }
