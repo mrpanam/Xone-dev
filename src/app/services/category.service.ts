@@ -45,6 +45,37 @@ export class CategoryService {
     return this._categories.value.find(cat => cat.id?.id.String === id);
   }
 
+  // Update a category
+  async updateCategory(id: string, updates: Partial<Category>): Promise<void> {
+    if (this._loading.value) return;
+    
+    this._loading.next(true);
+    this._error.next(null);
+
+    try {
+      // Remove the id from updates if it exists to avoid conflicts
+      const { id: _, ...updateData } = updates as any;
+      
+      const updatedCategory = await invoke<Category>('update_type', { 
+        id, 
+        updates: updateData 
+      });
+      
+      const categories = this._categories.value.map(cat => 
+        cat.id?.id.String === id ? { ...cat, ...updatedCategory } : cat
+      );
+      
+      this._categories.next(categories);
+    } catch (error) {
+      console.error('Update category error:', error);
+      const errorMessage = `Failed to update category: ${error}`;
+      this._error.next(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      this._loading.next(false);
+    }
+  }
+
   // Delete a category
   async deleteCategory(id: string): Promise<void> {
     if (this._loading.value) return;

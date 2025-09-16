@@ -17,6 +17,8 @@ export class CategoryComponent {
   showAddForm = false;
   categoryForm: FormGroup;
   categoryToDelete: { id: string; name: string } | null = null;
+  categoryToEdit: Category | null = null;
+  editing = false;
   deleting = false;
   @ViewChild('deleteModal') deleteModal!: ElementRef;
 
@@ -37,9 +39,19 @@ export class CategoryComponent {
 
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
-    if (!this.showAddForm) {
-      this.categoryForm.reset();
-    }
+    this.editing = false;
+    this.categoryToEdit = null;
+    this.categoryForm.reset();
+  }
+
+  editCategory(category: Category) {
+    this.categoryToEdit = category;
+    this.editing = true;
+    this.showAddForm = true;
+    this.categoryForm.patchValue({
+      name: category.name,
+      description: category.description
+    });
   }
 
   // Handle category deletion
@@ -71,17 +83,28 @@ export class CategoryComponent {
 
   async onSubmit() {
     if (this.categoryForm.valid) {
-      const { name, description } = this.categoryForm.value;  
-      const surrealid : SurrealId = {
-        tb: 'category',
-        id: { String: name.toLowerCase() }
-      };   
-      const category: Category = {
-        id: surrealid,
-        name,
-        description
-      };
-      await this.categoryService.createCategory(category);
+      const { name, description } = this.categoryForm.value;
+      
+      if (this.editing && this.categoryToEdit?.id?.id.String) {
+        // Update existing category
+        await this.categoryService.updateCategory(this.categoryToEdit.id.id.String, {
+          name,
+          description
+        });
+      } else {
+        // Create new category
+        const surrealid: SurrealId = {
+          tb: 'category',
+          id: { String: name.toLowerCase() }
+        };   
+        const category: Category = {
+          id: surrealid,
+          name,
+          description
+        };
+        await this.categoryService.createCategory(category);
+      }
+      
       this.toggleAddForm();
       await this.categoryService.refreshCategories();
     }

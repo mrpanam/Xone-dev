@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use surrealdb::Surreal;
+use surrealdb::engine::remote::ws::Client;
 use crate::model;
-use crate::db::init;
+use crate::db::Db;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct CreateCategory {
@@ -9,8 +12,13 @@ struct CreateCategory {
 }
 
 #[tauri::command]
-pub async fn create_category(id: String, name: String, description: String) -> Result<model::Category, String> {
-    let db = init().await.map_err(|e| e.to_string())?;
+pub async fn create_category(
+    db: tauri::State<'_, Db>,
+    id: String, 
+    name: String, 
+    description: String
+) -> Result<model::Category, String> {
+    let db = db.lock().await;
     
     // Create a new category with the specified ID
     let category: Option<model::Category> = db
@@ -29,8 +37,39 @@ pub async fn create_category(id: String, name: String, description: String) -> R
 }
 
 #[tauri::command]
-pub async fn delete_category(id: String) -> Result<(), String> {
-    let db = init().await.map_err(|e| e.to_string())?;
+pub async fn update_type(
+    db: tauri::State<'_, Db>,
+    id: String, 
+    updates: std::collections::HashMap<String, Value>
+) -> Result<model::Category, String> {
+    let db = db.lock().await;
+    
+    // Convert the updates HashMap to a serde_json::Value
+    let updates_value = serde_json::to_value(updates)
+        .map_err(|e| format!("Failed to serialize updates: {}", e))?;
+    
+    // Use the update API with merge
+    let category: Option<model::Category> = db
+        .update(("category", id.as_str()))
+        .merge(updates_value)
+        .await
+        .map_err(|e| format!("Failed to update category: {}", e))?;
+    
+    match category {
+        Some(cat) => {
+            println!("Updated category: {:?}", cat);
+            Ok(cat)
+        }
+        None => Err("Failed to update category: not found".to_string()),
+    }
+}
+
+#[tauri::command]
+pub async fn delete_category(
+    db: tauri::State<'_, Db>,
+    id: String
+) -> Result<(), String> {
+    let db = db.lock().await;
     
     // Delete the category using the (table, id) tuple syntax
     let _: Option<model::Category> = db.delete(("category", id.as_str()))
