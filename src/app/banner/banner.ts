@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { User } from '../models/user.model';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';  
 
 @Component({
   selector: 'app-banner',
+  standalone: true,
   imports: [CurrencyPipe, DecimalPipe],
   templateUrl: './banner.html',
   styleUrl: './banner.css'

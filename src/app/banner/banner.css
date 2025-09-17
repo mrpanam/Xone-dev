@@ -1,0 +1,13 @@
+/* Sidebar styling */
+.sidebar {
+  min-height: 100vh;
+  width: 280px; /* Fixed width for the sidebar */
+  min-width: 280px; /* Prevent shrinking below this width */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  z-index: 1000;
+  background-color: #666600;
+  color: white;
+  padding: 1rem;
+  overflow-y: auto; /* Enable scrolling if content is too tall */
+}

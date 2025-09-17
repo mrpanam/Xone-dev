@@ -6,11 +6,12 @@ import { Trade } from '../models/trade.model';
 import { User } from '../models/user.model';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Banner } from '../banner/banner';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DecimalPipe, NgIf],
+  imports: [CommonModule, CurrencyPipe, DecimalPipe, NgIf, Banner],
   templateUrl: './home.html',
   styleUrl: './home.css', 
 })
@@ -22,16 +23,7 @@ export class HomeComponent implements OnInit {
   topStocks: { symbol: string; change: number; currentPrice: number }[] = [];
   chart: any;
   loading = true;
-  user: User = {
-    id: 'user123',
-    name: 'Eric Paris',
-    email: 'john.doe@example.com',
-    avatar: 'https://ui-avatars.com/api/?name=Eric+Paris&background=000000&color=fff&size=128',
-    balance: 76756.75,
-    level: 24,
-    rating: 4.8,
-    tradesCompleted: 156
-  };
+ 
 
   constructor(private tradeService: TradeService) {}
 
