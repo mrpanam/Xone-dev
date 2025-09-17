@@ -1,13 +1,50 @@
 /* Sidebar styling */
 .sidebar {
   min-height: 100vh;
-  width: 280px; /* Fixed width for the sidebar */
-  min-width: 280px; /* Prevent shrinking below this width */
+  width: 280px;
+  min-width: 280px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
   z-index: 1000;
   background-color: #666600;
   color: white;
   padding: 1rem;
-  overflow-y: auto; /* Enable scrolling if content is too tall */
+  overflow-y: auto;
+}
+
+/* User section styling */
+.balance-display {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.balance-display:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Navigation links */
+.nav-link {
+  color: rgba(255, 255, 255, 0.7) !important;
+  padding: 0.75rem 1.5rem;
+  margin: 0.25rem 0;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white !important;
+  text-decoration: none;
+}
+
+.nav-link i {
+  width: 20px;
+  text-align: center;
+  margin-right: 0.5rem;
 }

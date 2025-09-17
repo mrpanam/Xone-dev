@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use surrealdb::Surreal;
-use surrealdb::engine::remote::ws::Client;
 use crate::model;
 use crate::db::Db;
 

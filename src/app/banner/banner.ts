@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { User } from '../models/user.model';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';  
 
 @Component({
   selector: 'app-banner',
   standalone: true,
-  imports: [CurrencyPipe, DecimalPipe],
+  imports: [CurrencyPipe, DecimalPipe, RouterLink, RouterLinkActive],
   templateUrl: './banner.html',
   styleUrl: './banner.css'
 })
